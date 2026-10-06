@@ -1,0 +1,35 @@
+# The official openGauss 7.0.0-RC3 / 6.x images cannot start on a clean host:
+# `gaussdb` fails at load time because
+#
+#   1. libopenblas.so.0 is a hard NEEDED entry of libgaussdb but is not shipped
+#      in the image, and
+#   2. the ~40 libraries the image *does* ship live in /usr/local/opengauss/lib,
+#      which is not on the dynamic linker path (no ld.so.conf entry and no
+#      LD_LIBRARY_PATH), so libonnxruntime, libtokenizers, libdcf, libcjson,
+#      libcgroup, libssl.so.3 ... all report "not found" too.
+#
+# Both are packaging bugs, not build differences. This image fixes exactly those
+# two things and changes nothing else: same binaries, same entrypoint, same
+# configuration surface. Measurements taken against it are measurements of the
+# official build.
+#
+#   docker build -f docker/Dockerfile.opengauss -t dbbench/opengauss:7.0.0-RC3 .
+#   OG_IMAGE=dbbench/opengauss:7.0.0-RC3 scripts/10_up.sh
+
+ARG OG_BASE=opengauss/opengauss:7.0.0-RC3.B025-amd64-openEuler22.03
+FROM ${OG_BASE}
+
+USER root
+
+RUN dnf install -y openblas \
+ && dnf clean all \
+ && rm -rf /var/cache/dnf
+
+RUN echo /usr/local/opengauss/lib > /etc/ld.so.conf.d/opengauss.conf && ldconfig
+
+# Fail the build loudly rather than at container start.
+RUN ldd /usr/local/opengauss/bin/gaussdb | grep 'not found' \
+ && (echo "STILL MISSING:"; ldd /usr/local/opengauss/bin/gaussdb | grep 'not found'; exit 1) \
+ || echo "all shared libraries resolved"
+
+RUN /usr/local/opengauss/bin/gaussdb -V
