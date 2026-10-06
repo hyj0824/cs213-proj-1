@@ -1,0 +1,33 @@
+# measured data and local build products
+data/
+out/*
+!out/figures/
+!out/figures/**
+!out/summary.csv
+!out/raw.csv
+!out/parallel_probe.csv
+!out/storage_ab.md
+!out/constraint_demo.txt
+!out/guc_compare.md
+!out/cold_method.txt
+!out/env.txt
+!out/full_run.log
+
+# toolchain
+.tools/
+benchmark/out/
+benchmark/lib/*.jar
+*.class
+
+# python
+__pycache__/
+*.pyc
+
+# private working notes and third-party material
+report/KEY_FINDINGS.md
+report/REPORT.template.md
+ref-report.pdf
+project1.pdf
+
+# editor / OS
+.DS_Store
