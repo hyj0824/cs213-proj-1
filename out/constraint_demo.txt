@@ -1,0 +1,50 @@
+# Integrity: what the DBMS refuses and the file program cannot notice
+
+Generated 2026-10-09T17:18:23+00:00
+
+The update replaces every `T` with `Ttt`, so a field of length L with k
+occurrences of `T` becomes L + 2k. A declared limit such as
+`VARCHAR(n)` + `CHECK (length(x) <= n)` therefore stops the statement as
+soon as a single row would grow past n.
+
+## postgres
+
+| declared limit n | table rows | rows the rewrite would push past n | outcome |
+|---|---|---|---|
+| 10 | 1806556 | 11815 | **refused**, rolled back -- `ERROR:  value too long for type character varying(10)`, rows bearing the rewrite afterwards: 0 |
+| 15 | 1972406 | 2441 | **refused**, rolled back -- `ERROR:  value too long for type character varying(15)`, rows bearing the rewrite afterwards: 0 |
+| 20 | 1996027 | 344 | **refused**, rolled back -- `ERROR:  value too long for type character varying(20)`, rows bearing the rewrite afterwards: 0 |
+| 25 | 1999186 | 92 | **refused**, rolled back -- `ERROR:  value too long for type character varying(25)`, rows bearing the rewrite afterwards: 0 |
+| 30 | 1999752 | 21 | **refused**, rolled back -- `ERROR:  value too long for type character varying(30)`, rows bearing the rewrite afterwards: 0 |
+
+## opengauss
+
+| declared limit n | table rows | rows the rewrite would push past n | outcome |
+|---|---|---|---|
+| 10 | 1806556 | 11815 | **refused**, rolled back -- `ERROR:  value too long for type character varying(10)`, rows bearing the rewrite afterwards: 0 |
+| 15 | 1972406 | 2441 | **refused**, rolled back -- `ERROR:  value too long for type character varying(15)`, rows bearing the rewrite afterwards: 0 |
+| 20 | 1996027 | 344 | **refused**, rolled back -- `ERROR:  value too long for type character varying(20)`, rows bearing the rewrite afterwards: 0 |
+| 25 | 1999186 | 92 | **refused**, rolled back -- `ERROR:  value too long for type character varying(25)`, rows bearing the rewrite afterwards: 0 |
+| 30 | 1999752 | 21 | **refused**, rolled back -- `ERROR:  value too long for type character varying(30)`, rows bearing the rewrite afterwards: 0 |
+
+## file backend
+
+The identical rewrite, streamed to a new file. The columns are separated so
+the comparison with the table above is honest: "created by the rewrite"
+counts only rows that satisfied the rule *before* the update and stopped
+satisfying it afterwards -- the same quantity as the DBMS column above.
+"already invalid" counts rows the flat file never had a way to reject.
+
+| declared limit n | created by the rewrite | already invalid before it | reported to anyone |
+|---|---|---|---|
+| 10 | 11815 | 193444 | 0 -- there is no mechanism |
+| 15 | 2441 | 27594 | 0 -- there is no mechanism |
+| 20 | 344 | 3973 | 0 -- there is no mechanism |
+| 25 | 92 | 814 | 0 -- there is no mechanism |
+| 30 | 21 | 248 | 0 -- there is no mechanism |
+
+The file program did not fail, and nothing downstream will ever know. This is
+the difference between *faster* and *possible*: a schema can state a rule and
+the engine will enforce it on every write, including writes nobody
+contemplated when the rule was written. The DBMS paid for that refusal with
+**0 rows changed** -- all or nothing, not \most of it\.
