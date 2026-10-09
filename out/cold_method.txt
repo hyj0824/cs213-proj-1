@@ -1,0 +1,18 @@
+# How the page cache was controlled, per phase.
+# Generated from out/cold_invocations.log (one line per cache-drop invocation).
+# A 'cold' measurement is only comparable with another 'cold' measurement
+# taken with the SAME method; mixing the two would be an unstated confound.
+#
+scale= 0  method=drop_caches (exact, root)          invocations=1     exact: drops the page cache (echo 3 > /proc/sys/vm/drop_caches)
+scale= 1  method=drop_caches (exact, root)          invocations=197   exact: drops the page cache (echo 3 > /proc/sys/vm/drop_caches)
+scale= 1  method=scratch eviction 1G (approximate, no root) invocations=8     approximate: streams a scratch file to evict the page cache; dentry/inode caches survive
+scale= 2  method=drop_caches (exact, root)          invocations=197   exact: drops the page cache (echo 3 > /proc/sys/vm/drop_caches)
+scale= 4  method=drop_caches (exact, root)          invocations=197   exact: drops the page cache (echo 3 > /proc/sys/vm/drop_caches)
+scale= 8  method=drop_caches (exact, root)          invocations=197   exact: drops the page cache (echo 3 > /proc/sys/vm/drop_caches)
+2026-10-09T20:00:49+00:00  drop_caches (exact, root)  scale=1
+2026-10-09T20:01:00+00:00  drop_caches (exact, root)  scale=1
+2026-10-09T20:01:30+00:00  drop_caches (exact, root)  scale=1
+2026-10-09T20:01:41+00:00  drop_caches (exact, root)  scale=1
+2026-10-09T20:05:28+00:00  drop_caches (exact, root)  scale=8
+2026-10-09T20:05:58+00:00  drop_caches (exact, root)  scale=8
+2026-10-09T20:06:09+00:00  drop_caches (exact, root)  scale=8
