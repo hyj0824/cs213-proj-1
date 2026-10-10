@@ -1,0 +1,15 @@
+                        Semantics.java
+        (the ONLY definition of what an operation means)
+             |                          |
+   SQL backends                    file backend
+   ------------                    ------------
+   PostgreSQL 18.6  ---+           sequential scan
+   openGauss 7.0.0  ---+--> JDBC    |  sorted file + byte-offset index
+                       |            |  naive in-place update (the wrong way)
+                       |            +--> reads TSV exported BY the database
+                       |
+             bench_titles_active            titles_active.tsv
+             102,732,680 rows               3.58 GB, sha256 in MANIFEST.txt
+
+   one client (2 physical cores)  ->  4 physical cores for ONE engine at a time
+   n = 7 timed runs per case, warm-up discarded, medians reported
