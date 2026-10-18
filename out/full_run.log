@@ -1,0 +1,969 @@
+launcher started 2026-10-09T10:01:46+00:00
+[1/2] CPU governor is 'powersave' -> setting 'performance'.
+      >>> sudo will ask for your password now. Type it in this pane. <<<
+[1/2] governor is now: performance
+[2/2] starting the full benchmark at 2026-10-09T10:01:50+00:00
+      phases already done: amplify_1 fetch guardrails_1 load 
+      monitor:  tail -f ./out/full_run.log
+
+[10:01:51] === preflight ===
+[10:01:51] free space on /home/user/dbbench: 721G (need ~60G for scale 8)
+[10:01:51] run id: full-20261009-1001   scales: 1 2 4 8   exclusive: 1
+[10:01:51] SKIP  fetch (download the IMDb datasets (420 MB)) -- already done
+[10:01:51] SKIP  load (load 10.29M titles + 2M names into both engines (~25 min)) -- already done
+[10:01:51] SKIP  amplify_1 (build the 1x table on both engines + export the file side) -- already done
+[10:01:51] SKIP  guardrails_1 (assert the file export and the SQL side encode the same data) -- already done
+[10:01:51] BEGIN measure_1 -- scan/point/join at 1x, one engine at a time
+[10:01:51] run full-20261009-1001-s1  scale 1  modes[scan point join]  backends[pg og file]  phases[warm cold]  exclusive=1
+[10:01:51] ================= phase warm (scale1_warm) =================
+[10:01:51] --- pg ---
+[10:01:51]   (exclusive) stopping dbbench-og
+[10:01:52]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 866.0 ms  (IQR 18.17 ms, min 838.7, max 879.3)  n=7  result=576221  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 239.6 ms  (IQR 1.134 ms, min 237.4, max 241.0)  n=7  result=576221  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 735.3 ms  (IQR 1.155 ms, min 733.8, max 736.2)  n=7  result=6486357  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 213.9 ms  (IQR 1.266 ms, min 211.0, max 215.9)  n=7  result=6486357  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 751.4 ms  (IQR 2.937 ms, min 748.9, max 795.9)  n=7  result=125525  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 217.9 ms  (IQR 1.219 ms, min 217.0, max 220.9)  n=7  result=125525  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 785.9 ms  (IQR 2.770 ms, min 783.0, max 788.9)  n=7  result=6361  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 228.0 ms  (IQR 5.360 ms, min 227.0, max 258.4)  n=7  result=6361  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=2000: median 50.02 ms  (IQR 4.467 ms, min 45.30, max 53.16)  n=7  result=588  consistent=true
+[10:02:40]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=10: median 1099 ms  (IQR 5.589 ms, min 1093, max 1101)  n=7  result=3  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg join the: median 2.681 ms  (IQR 0.078 ms, min 2.581, max 2.715)  n=7  result=3851  consistent=true
+[10:02:53]   (exclusive) restarting dbbench-og
+[10:02:54] --- og ---
+[10:02:54]   (exclusive) stopping dbbench-pg
+[10:02:54]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 1317 ms  (IQR 3.891 ms, min 1313, max 1325)  n=7  result=576221  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 1312 ms  (IQR 3.133 ms, min 1311, max 1318)  n=7  result=576221  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 1289 ms  (IQR 3.720 ms, min 1283, max 1299)  n=7  result=6486357  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 1287 ms  (IQR 3.480 ms, min 1284, max 1296)  n=7  result=6486357  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 1182 ms  (IQR 5.159 ms, min 1180, max 1187)  n=7  result=125525  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 1179 ms  (IQR 1.255 ms, min 1176, max 1183)  n=7  result=125525  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 1235 ms  (IQR 6.557 ms, min 1230, max 1240)  n=7  result=6361  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 1237 ms  (IQR 4.814 ms, min 1235, max 1241)  n=7  result=6361  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=2000: median 76.46 ms  (IQR 1.741 ms, min 75.00, max 80.63)  n=7  result=588  consistent=true
+[10:04:43]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=10: median 6789 ms  (IQR 12.80 ms, min 6767, max 6814)  n=7  result=3  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og join the: median 2.921 ms  (IQR 0.259 ms, min 2.765, max 3.129)  n=7  result=3851  consistent=true
+[10:05:53]   (exclusive) restarting dbbench-pg
+[10:05:53] --- file ---
+[10:05:53]   warming up file
+== file scan the: median 649.1 ms  (IQR 3.469 ms, min 646.3, max 652.4)  n=7  result=576221  consistent=true
+== file scan a: median 536.8 ms  (IQR 8.294 ms, min 526.1, max 549.1)  n=7  result=6486357  consistent=true
+== file scan man: median 596.7 ms  (IQR 3.743 ms, min 592.8, max 598.7)  n=7  result=125525  consistent=true
+== file scan love: median 629.1 ms  (IQR 1.765 ms, min 628.0, max 637.6)  n=7  result=6361  consistent=true
+== file point n=2000: median 537.3 ms  (IQR 4.151 ms, min 533.7, max 540.9)  n=7  result=588  consistent=true
+== file join the: median 15.45 ms  (IQR 9.748 ms, min 6.635, max 17.65)  n=7  result=3851  consistent=true
+== file point n=2000: median 16.86 ms  (IQR 0.655 ms, min 16.26, max 18.77)  n=7  result=588  consistent=true
+== file join the: median 6.752 ms  (IQR 0.808 ms, min 6.074, max 10.51)  n=7  result=3851  consistent=true
+[10:06:25] ================= phase cold (scale1_cold) =================
+[10:06:26] page cache dropped
+[10:06:26] note: shared_buffers still holds pages; restart the containers for a true cold start:
+[10:06:26]       docker restart dbbench-pg dbbench-og
+[10:06:26] --- pg ---
+[10:06:26]   (exclusive) stopping dbbench-og
+[10:06:27]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 822.8 ms  (IQR 2.772 ms, min 820.7, max 827.8)  n=7  result=576221  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 234.9 ms  (IQR 2.726 ms, min 232.3, max 243.3)  n=7  result=576221  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 726.1 ms  (IQR 1.918 ms, min 723.7, max 727.0)  n=7  result=6486357  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 210.3 ms  (IQR 2.376 ms, min 207.3, max 214.3)  n=7  result=6486357  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 746.6 ms  (IQR 2.024 ms, min 745.8, max 751.6)  n=7  result=125525  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 217.0 ms  (IQR 1.401 ms, min 215.5, max 222.0)  n=7  result=125525  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 773.2 ms  (IQR 1.124 ms, min 771.7, max 775.4)  n=7  result=6361  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 224.7 ms  (IQR 2.089 ms, min 222.2, max 225.9)  n=7  result=6361  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=2000: median 47.85 ms  (IQR 2.018 ms, min 46.05, max 50.56)  n=7  result=588  consistent=true
+[10:07:14]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=10: median 1057 ms  (IQR 4.781 ms, min 1048, max 1064)  n=7  result=3  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg join the: median 2.630 ms  (IQR 0.094 ms, min 2.580, max 2.720)  n=7  result=3851  consistent=true
+[10:07:28]   (exclusive) restarting dbbench-og
+[10:07:28] --- og ---
+[10:07:28]   (exclusive) stopping dbbench-pg
+[10:07:28]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 1319 ms  (IQR 1.787 ms, min 1312, max 1324)  n=7  result=576221  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 1311 ms  (IQR 3.147 ms, min 1310, max 1316)  n=7  result=576221  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 1286 ms  (IQR 1.671 ms, min 1283, max 1289)  n=7  result=6486357  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 1288 ms  (IQR 2.620 ms, min 1285, max 1289)  n=7  result=6486357  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 1177 ms  (IQR 0.512 ms, min 1175, max 1180)  n=7  result=125525  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 1179 ms  (IQR 0.826 ms, min 1176, max 1181)  n=7  result=125525  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 1231 ms  (IQR 2.800 ms, min 1229, max 1233)  n=7  result=6361  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 1230 ms  (IQR 1.409 ms, min 1230, max 1233)  n=7  result=6361  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=2000: median 80.98 ms  (IQR 2.965 ms, min 76.28, max 85.92)  n=7  result=588  consistent=true
+[10:09:17]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=10: median 6773 ms  (IQR 7.555 ms, min 6765, max 6795)  n=7  result=3  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og join the: median 2.842 ms  (IQR 0.180 ms, min 2.611, max 3.010)  n=7  result=3851  consistent=true
+[10:10:26]   (exclusive) restarting dbbench-pg
+[10:10:26] --- file ---
+[10:10:26]   warming up file
+== file scan the: median 652.2 ms  (IQR 1.673 ms, min 650.5, max 654.0)  n=7  result=576221  consistent=true
+== file scan a: median 544.0 ms  (IQR 3.085 ms, min 542.3, max 547.9)  n=7  result=6486357  consistent=true
+== file scan man: median 591.1 ms  (IQR 2.004 ms, min 590.1, max 595.2)  n=7  result=125525  consistent=true
+== file scan love: median 666.0 ms  (IQR 9.864 ms, min 652.5, max 678.3)  n=7  result=6361  consistent=true
+== file point n=2000: median 558.4 ms  (IQR 14.89 ms, min 549.9, max 573.8)  n=7  result=588  consistent=true
+== file join the: median 6.585 ms  (IQR 7.526 ms, min 6.552, max 21.90)  n=7  result=3851  consistent=true
+== file point n=2000: median 18.33 ms  (IQR 0.940 ms, min 17.37, max 19.42)  n=7  result=588  consistent=true
+== file join the: median 4.507 ms  (IQR 0.527 ms, min 4.224, max 7.047)  n=7  result=3851  consistent=true
+[10:10:59] raw results: ./out/raw.csv (427 data lines)
+[10:10:59] now:  python3 analysis/analyze.py --raw ./out/raw.csv
+[10:10:59] DONE  measure_1 -- 9m8s
+[10:10:59] BEGIN amplify_2 -- build the 2x table on both engines + export the file side
+[10:11:00] postgres: appending blocks 1..1 (from 12841585 to 25683170 rows)
+[10:11:11] postgres: inserted in 11s
+[10:11:12] postgres: 25683170 titles, 2000000 people, heap 1584 MB, indexes 631 MB
+[10:11:14] opengauss: appending blocks 1..1 (from 12841585 to 25683170 rows)
+[10:11:31] opengauss: inserted in 17s
+[10:11:35] opengauss: 25683170 titles, 2000000 people, heap 1587 MB, indexes 643 MB
+[10:11:35] regenerating the file-side export at SCALE=2
+[10:11:35] exporting titles_active.tsv ...
+to-tsv: 25683170 rows -> ./data/titles_active.tsv
+[10:12:01] building sorted variant + byte-offset index (this is the 'armed' file layout)
+index: 25683170 offsets (205465360 bytes) -> ./data/titles_active.sorted.idx
+[10:12:17] titles: 25683170 rows
+[10:12:17] exporting people_active.tsv ...
+to-tsv: 2000000 rows -> ./data/people_active.tsv
+[10:12:19] people: 2000000 rows (backup written to people_active.tsv.orig)
+[10:12:19] exporting film_movies.tsv ...
+to-tsv: 9204 rows -> ./data/film_movies.tsv
+[10:12:19] exporting film_credits.tsv ...
+to-tsv: 46850 rows -> ./data/film_credits.tsv
+[10:12:19] exporting film_people.tsv ...
+to-tsv: 16489 rows -> ./data/film_people.tsv
+[10:12:19] manifest:
+    # canonical file export
+    # generated 2026-10-09T10:11:35+00:00
+    # source: postgres container dbbench-pg, database bench
+    titles_active.tsv  rows=25683170  bytes=869580413  sha256=041fd0442bb048ae
+    titles_active.sorted.tsv  rows=25683170  bytes=869580413  sha256=1865f2d7a7521fb3
+    titles_active.sorted.idx  bytes=205465360
+    titles_active.range  1 1048307012
+    people_active.tsv  rows=2000000  bytes=45253607  sha256=bebcf4300b34dc46
+    film_movies.tsv  rows=9204  bytes=199765  sha256=b8b3688fa8a16b45
+    film_credits.tsv  rows=46850  bytes=571392  sha256=2c78c8160fb73c9c
+    film_people.tsv  rows=16489  bytes=320810  sha256=e700e2c8a4b50ce7
+
+SCALE=2 is loaded on both engines and exported to ./data.
+Next:  SCALE=2 scripts/40_run_all.sh
+[10:12:19] DONE  amplify_2 -- 1m20s
+[10:12:19] BEGIN guardrails_2 -- assert the file export and the SQL side encode the same data
+1. titles containing a tab (would shift fields in the TSV export):
+ count 
+-------
+     0
+(1 row)
+
+2. titles containing CR/LF (would break one-record-per-line reading):
+ count 
+-------
+     0
+(1 row)
+
+3. disagreements between LIKE and strpos on metacharacter-heavy titles:
+ disagreements 
+---------------
+             0
+(1 row)
+
+4. names containing CR/LF:
+ count 
+-------
+     0
+(1 row)
+
+5. rows the update predicate matches (this is the expected row count):
+ count  
+--------
+ 161542
+(1 row)
+
+[10:12:21] DONE  guardrails_2 -- 0m2s
+[10:12:21] BEGIN measure_2 -- scan/point/join at 2x, one engine at a time
+[10:12:21] run full-20261009-1001-s2  scale 2  modes[scan point join]  backends[pg og file]  phases[warm cold]  exclusive=1
+[10:12:21] ================= phase warm (scale2_warm) =================
+[10:12:21] --- pg ---
+[10:12:21]   (exclusive) stopping dbbench-og
+[10:12:22]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 1637 ms  (IQR 1.955 ms, min 1635, max 1639)  n=7  result=1152442  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 463.6 ms  (IQR 4.114 ms, min 460.3, max 471.7)  n=7  result=1152442  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 1449 ms  (IQR 2.934 ms, min 1448, max 1452)  n=7  result=12972714  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 410.2 ms  (IQR 2.362 ms, min 408.7, max 413.7)  n=7  result=12972714  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 1493 ms  (IQR 0.883 ms, min 1491, max 1494)  n=7  result=251050  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 426.4 ms  (IQR 1.885 ms, min 424.5, max 433.5)  n=7  result=251050  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 1546 ms  (IQR 1.507 ms, min 1545, max 1550)  n=7  result=12722  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 441.2 ms  (IQR 1.693 ms, min 437.9, max 443.0)  n=7  result=12722  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=2000: median 47.08 ms  (IQR 1.898 ms, min 45.89, max 49.54)  n=7  result=40  consistent=true
+[10:13:50]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=10: median 2058 ms  (IQR 8.340 ms, min 2048, max 2079)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg join the: median 2.688 ms  (IQR 0.145 ms, min 2.574, max 2.825)  n=7  result=3851  consistent=true
+[10:14:14]   (exclusive) restarting dbbench-og
+[10:14:14] --- og ---
+[10:14:14]   (exclusive) stopping dbbench-pg
+[10:14:15]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 2950 ms  (IQR 8.479 ms, min 2942, max 2959)  n=7  result=1152442  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 2960 ms  (IQR 4.394 ms, min 2955, max 2968)  n=7  result=1152442  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 2919 ms  (IQR 7.666 ms, min 2911, max 2928)  n=7  result=12972714  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 2918 ms  (IQR 5.990 ms, min 2906, max 2921)  n=7  result=12972714  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 2683 ms  (IQR 7.117 ms, min 2678, max 2694)  n=7  result=251050  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 2688 ms  (IQR 7.327 ms, min 2683, max 2695)  n=7  result=251050  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 2782 ms  (IQR 9.188 ms, min 2781, max 2796)  n=7  result=12722  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 2787 ms  (IQR 9.685 ms, min 2783, max 2820)  n=7  result=12722  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=2000: median 77.36 ms  (IQR 2.940 ms, min 74.37, max 82.64)  n=7  result=40  consistent=true
+[10:18:13]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=10: median 16688 ms  (IQR 15.85 ms, min 16670, max 16717)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og join the: median 2.691 ms  (IQR 0.139 ms, min 2.644, max 2.828)  n=7  result=3851  consistent=true
+[10:21:00]   (exclusive) restarting dbbench-pg
+[10:21:00] --- file ---
+[10:21:00]   warming up file
+== file scan the: median 1317 ms  (IQR 6.994 ms, min 1311, max 1328)  n=7  result=1152442  consistent=true
+== file scan a: median 1082 ms  (IQR 2.540 ms, min 1080, max 1086)  n=7  result=12972714  consistent=true
+== file scan man: median 1197 ms  (IQR 3.646 ms, min 1193, max 1203)  n=7  result=251050  consistent=true
+== file scan love: median 1267 ms  (IQR 9.229 ms, min 1264, max 1278)  n=7  result=12722  consistent=true
+== file point n=2000: median 1082 ms  (IQR 2.029 ms, min 1079, max 1086)  n=7  result=40  consistent=true
+== file join the: median 6.575 ms  (IQR 11.28 ms, min 6.244, max 19.36)  n=7  result=3851  consistent=true
+== file point n=2000: median 14.36 ms  (IQR 0.491 ms, min 14.13, max 17.12)  n=7  result=40  consistent=true
+== file join the: median 3.154 ms  (IQR 0.104 ms, min 3.074, max 7.505)  n=7  result=3851  consistent=true
+[10:21:59] ================= phase cold (scale2_cold) =================
+[10:21:59] evicting the page cache by streaming 14G through it ...
+[10:22:05] page cache evicted by streaming a scratch file (method: scratch, no root)
+[WARN] this is weaker than drop_caches: dentry/inode caches survive. State that in the report.
+[10:22:05] note: shared_buffers is NOT cleared by either method; restart the containers for a true cold start:
+[10:22:05]       docker restart dbbench-pg dbbench-og
+[10:22:05] --- pg ---
+[10:22:05]   (exclusive) stopping dbbench-og
+[10:22:06]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 1702 ms  (IQR 5.197 ms, min 1694, max 1710)  n=7  result=1152442  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 530.5 ms  (IQR 15.86 ms, min 513.1, max 546.7)  n=7  result=1152442  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 1479 ms  (IQR 4.760 ms, min 1475, max 1486)  n=7  result=12972714  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 418.3 ms  (IQR 19.88 ms, min 408.5, max 439.9)  n=7  result=12972714  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 1491 ms  (IQR 1.617 ms, min 1490, max 1497)  n=7  result=251050  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 423.1 ms  (IQR 3.902 ms, min 421.7, max 426.8)  n=7  result=251050  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 1547 ms  (IQR 4.677 ms, min 1543, max 1551)  n=7  result=12722  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 439.6 ms  (IQR 1.697 ms, min 436.9, max 442.8)  n=7  result=12722  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=2000: median 46.15 ms  (IQR 1.380 ms, min 44.19, max 52.00)  n=7  result=40  consistent=true
+[10:23:35]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=10: median 2069 ms  (IQR 5.836 ms, min 2063, max 2076)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg join the: median 2.522 ms  (IQR 0.153 ms, min 2.369, max 2.571)  n=7  result=3851  consistent=true
+[10:23:59]   (exclusive) restarting dbbench-og
+[10:23:59] --- og ---
+[10:23:59]   (exclusive) stopping dbbench-pg
+[10:23:59]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 2957 ms  (IQR 8.330 ms, min 2944, max 2965)  n=7  result=1152442  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 2950 ms  (IQR 3.995 ms, min 2946, max 2952)  n=7  result=1152442  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 2921 ms  (IQR 7.720 ms, min 2913, max 2945)  n=7  result=12972714  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 2922 ms  (IQR 6.830 ms, min 2914, max 2926)  n=7  result=12972714  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 2686 ms  (IQR 2.972 ms, min 2679, max 2686)  n=7  result=251050  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 2684 ms  (IQR 4.692 ms, min 2671, max 2685)  n=7  result=251050  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 2784 ms  (IQR 1.698 ms, min 2782, max 2797)  n=7  result=12722  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 2782 ms  (IQR 3.544 ms, min 2779, max 2784)  n=7  result=12722  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=2000: median 81.42 ms  (IQR 7.411 ms, min 75.54, max 89.23)  n=7  result=40  consistent=true
+[10:27:57]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=10: median 16690 ms  (IQR 17.74 ms, min 16669, max 16718)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og join the: median 2.707 ms  (IQR 0.091 ms, min 2.663, max 2.875)  n=7  result=3851  consistent=true
+[10:30:45]   (exclusive) restarting dbbench-pg
+[10:30:45] --- file ---
+[10:30:45]   warming up file
+== file scan the: median 1323 ms  (IQR 2.419 ms, min 1322, max 1328)  n=7  result=1152442  consistent=true
+== file scan a: median 1091 ms  (IQR 3.250 ms, min 1087, max 1095)  n=7  result=12972714  consistent=true
+== file scan man: median 1195 ms  (IQR 4.494 ms, min 1192, max 1199)  n=7  result=251050  consistent=true
+== file scan love: median 1279 ms  (IQR 4.388 ms, min 1274, max 1283)  n=7  result=12722  consistent=true
+== file point n=2000: median 1101 ms  (IQR 2.292 ms, min 1100, max 1103)  n=7  result=40  consistent=true
+== file join the: median 6.599 ms  (IQR 11.74 ms, min 6.210, max 19.16)  n=7  result=3851  consistent=true
+== file point n=2000: median 14.32 ms  (IQR 1.764 ms, min 14.04, max 17.92)  n=7  result=40  consistent=true
+== file join the: median 6.123 ms  (IQR 1.387 ms, min 5.623, max 12.18)  n=7  result=3851  consistent=true
+[10:31:44] raw results: ./out/raw.csv (853 data lines)
+[10:31:44] now:  python3 analysis/analyze.py --raw ./out/raw.csv
+[10:31:44] DONE  measure_2 -- 19m23s
+[10:31:44] BEGIN amplify_4 -- build the 4x table on both engines + export the file side
+[10:31:45] postgres: appending blocks 2..3 (from 25683170 to 51366340 rows)
+[10:32:07] postgres: inserted in 22s
+[10:32:09] postgres: 51366340 titles, 2000000 people, heap 3167 MB, indexes 1261 MB
+[10:32:11] opengauss: appending blocks 2..3 (from 25683170 to 51366340 rows)
+[10:32:53] opengauss: inserted in 42s
+[10:32:59] opengauss: 51366340 titles, 2000000 people, heap 3173 MB, indexes 1447 MB
+[10:32:59] regenerating the file-side export at SCALE=4
+[10:33:00] exporting titles_active.tsv ...
+to-tsv: 51366340 rows -> ./data/titles_active.tsv
+[10:33:51] building sorted variant + byte-offset index (this is the 'armed' file layout)
+index: 51366340 offsets (410930720 bytes) -> ./data/titles_active.sorted.idx
+[10:34:22] titles: 51366340 rows
+[10:34:22] exporting people_active.tsv ...
+to-tsv: 2000000 rows -> ./data/people_active.tsv
+[10:34:25] people: 2000000 rows (backup written to people_active.tsv.orig)
+[10:34:25] exporting film_movies.tsv ...
+to-tsv: 9204 rows -> ./data/film_movies.tsv
+[10:34:25] exporting film_credits.tsv ...
+to-tsv: 46850 rows -> ./data/film_credits.tsv
+[10:34:25] exporting film_people.tsv ...
+to-tsv: 16489 rows -> ./data/film_people.tsv
+[10:34:25] manifest:
+    # canonical file export
+    # generated 2026-10-09T10:32:59+00:00
+    # source: postgres container dbbench-pg, database bench
+    titles_active.tsv  rows=51366340  bytes=1771546245  sha256=d72a4ede42e2bfb3
+    titles_active.sorted.tsv  rows=51366340  bytes=1771546245  sha256=a6eb1b23c09bb196
+    titles_active.sorted.idx  bytes=410930720
+    titles_active.range  1 3048307012
+    people_active.tsv  rows=2000000  bytes=45253607  sha256=bebcf4300b34dc46
+    film_movies.tsv  rows=9204  bytes=199765  sha256=b8b3688fa8a16b45
+    film_credits.tsv  rows=46850  bytes=571392  sha256=2c78c8160fb73c9c
+    film_people.tsv  rows=16489  bytes=320810  sha256=e700e2c8a4b50ce7
+
+SCALE=4 is loaded on both engines and exported to ./data.
+Next:  SCALE=4 scripts/40_run_all.sh
+[10:34:25] DONE  amplify_4 -- 2m41s
+[10:34:25] BEGIN guardrails_4 -- assert the file export and the SQL side encode the same data
+1. titles containing a tab (would shift fields in the TSV export):
+ count 
+-------
+     0
+(1 row)
+
+2. titles containing CR/LF (would break one-record-per-line reading):
+ count 
+-------
+     0
+(1 row)
+
+3. disagreements between LIKE and strpos on metacharacter-heavy titles:
+ disagreements 
+---------------
+             0
+(1 row)
+
+4. names containing CR/LF:
+ count 
+-------
+     0
+(1 row)
+
+5. rows the update predicate matches (this is the expected row count):
+ count  
+--------
+ 161542
+(1 row)
+
+[10:34:29] DONE  guardrails_4 -- 0m4s
+[10:34:29] BEGIN measure_4 -- scan/point/join at 4x, one engine at a time
+[10:34:29] run full-20261009-1001-s4  scale 4  modes[scan point join]  backends[pg og file]  phases[warm cold]  exclusive=1
+[10:34:29] ================= phase warm (scale4_warm) =================
+[10:34:29] --- pg ---
+[10:34:29]   (exclusive) stopping dbbench-og
+[10:34:31]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 3345 ms  (IQR 7.189 ms, min 3339, max 3351)  n=7  result=2304884  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 975.3 ms  (IQR 17.35 ms, min 959.2, max 1017)  n=7  result=2304884  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 2923 ms  (IQR 2.811 ms, min 2920, max 2929)  n=7  result=25945428  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 828.9 ms  (IQR 2.310 ms, min 824.4, max 830.3)  n=7  result=25945428  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 2994 ms  (IQR 2.573 ms, min 2992, max 2999)  n=7  result=502100  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 861.9 ms  (IQR 3.996 ms, min 857.7, max 869.9)  n=7  result=502100  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 3106 ms  (IQR 24.50 ms, min 3098, max 3198)  n=7  result=25444  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 888.2 ms  (IQR 3.124 ms, min 882.6, max 895.0)  n=7  result=25444  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=2000: median 52.24 ms  (IQR 4.160 ms, min 44.98, max 54.67)  n=7  result=28  consistent=true
+[10:37:20]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=10: median 4172 ms  (IQR 3.763 ms, min 4167, max 4183)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg join the: median 2.667 ms  (IQR 0.065 ms, min 2.607, max 2.719)  n=7  result=3851  consistent=true
+[10:38:07]   (exclusive) restarting dbbench-og
+[10:38:07] --- og ---
+[10:38:07]   (exclusive) stopping dbbench-pg
+[10:38:09]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 5904 ms  (IQR 14.18 ms, min 5882, max 5914)  n=7  result=2304884  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 5900 ms  (IQR 20.38 ms, min 5893, max 5919)  n=7  result=2304884  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 5834 ms  (IQR 13.11 ms, min 5825, max 5858)  n=7  result=25945428  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 5840 ms  (IQR 6.687 ms, min 5832, max 5853)  n=7  result=25945428  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 5385 ms  (IQR 8.356 ms, min 5361, max 5393)  n=7  result=502100  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 5372 ms  (IQR 24.25 ms, min 5357, max 5387)  n=7  result=502100  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 5579 ms  (IQR 7.226 ms, min 5573, max 5583)  n=7  result=25444  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 5573 ms  (IQR 4.154 ms, min 5556, max 5587)  n=7  result=25444  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=2000: median 77.50 ms  (IQR 1.988 ms, min 74.98, max 80.29)  n=7  result=28  consistent=true
+[10:45:59]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=10: median 33558 ms  (IQR 37.66 ms, min 33535, max 33623)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og join the: median 2.843 ms  (IQR 0.074 ms, min 2.779, max 2.935)  n=7  result=3851  consistent=true
+[10:51:34]   (exclusive) restarting dbbench-pg
+[10:51:34] --- file ---
+[10:51:34]   warming up file
+== file scan the: median 2681 ms  (IQR 5.645 ms, min 2674, max 2706)  n=7  result=2304884  consistent=true
+== file scan a: median 2320 ms  (IQR 2.961 ms, min 2318, max 2323)  n=7  result=25945428  consistent=true
+== file scan man: median 2577 ms  (IQR 3.655 ms, min 2574, max 2583)  n=7  result=502100  consistent=true
+== file scan love: median 2717 ms  (IQR 7.387 ms, min 2704, max 2724)  n=7  result=25444  consistent=true
+== file point n=2000: median 2218 ms  (IQR 1.694 ms, min 2213, max 2224)  n=7  result=28  consistent=true
+== file join the: median 6.796 ms  (IQR 8.587 ms, min 6.638, max 15.93)  n=7  result=3851  consistent=true
+== file point n=2000: median 14.97 ms  (IQR 0.336 ms, min 14.92, max 15.81)  n=7  result=28  consistent=true
+== file join the: median 4.157 ms  (IQR 0.094 ms, min 3.049, max 4.919)  n=7  result=3851  consistent=true
+[10:53:33] ================= phase cold (scale4_cold) =================
+[10:53:33] evicting the page cache by streaming 14G through it ...
+[10:53:40] page cache evicted by streaming a scratch file (method: scratch, no root)
+[WARN] this is weaker than drop_caches: dentry/inode caches survive. State that in the report.
+[10:53:40] note: shared_buffers is NOT cleared by either method; restart the containers for a true cold start:
+[10:53:40]       docker restart dbbench-pg dbbench-og
+[10:53:40] --- pg ---
+[10:53:40]   (exclusive) stopping dbbench-og
+[10:53:40]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 3452 ms  (IQR 20.82 ms, min 3444, max 3477)  n=7  result=2304884  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 1092 ms  (IQR 17.24 ms, min 1086, max 1109)  n=7  result=2304884  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 3039 ms  (IQR 3.889 ms, min 3037, max 3044)  n=7  result=25945428  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 948.7 ms  (IQR 21.48 ms, min 933.2, max 964.0)  n=7  result=25945428  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 3061 ms  (IQR 3.708 ms, min 3050, max 3072)  n=7  result=502100  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 901.4 ms  (IQR 18.05 ms, min 882.8, max 922.6)  n=7  result=502100  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 3169 ms  (IQR 8.124 ms, min 3161, max 3178)  n=7  result=25444  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 876.8 ms  (IQR 6.211 ms, min 873.9, max 886.0)  n=7  result=25444  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=2000: median 46.45 ms  (IQR 1.712 ms, min 44.98, max 49.08)  n=7  result=28  consistent=true
+[10:56:36]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=10: median 4109 ms  (IQR 7.585 ms, min 4096, max 4123)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg join the: median 2.515 ms  (IQR 0.129 ms, min 2.424, max 2.625)  n=7  result=3851  consistent=true
+[10:57:23]   (exclusive) restarting dbbench-og
+[10:57:23] --- og ---
+[10:57:23]   (exclusive) stopping dbbench-pg
+[10:57:24]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 5881 ms  (IQR 5.278 ms, min 5874, max 5901)  n=7  result=2304884  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 5894 ms  (IQR 12.37 ms, min 5884, max 5907)  n=7  result=2304884  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 5828 ms  (IQR 4.195 ms, min 5827, max 5837)  n=7  result=25945428  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 5825 ms  (IQR 12.68 ms, min 5811, max 5836)  n=7  result=25945428  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 5358 ms  (IQR 3.570 ms, min 5350, max 5367)  n=7  result=502100  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 5356 ms  (IQR 15.10 ms, min 5344, max 5373)  n=7  result=502100  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 5573 ms  (IQR 8.293 ms, min 5561, max 5581)  n=7  result=25444  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 5576 ms  (IQR 13.08 ms, min 5557, max 5579)  n=7  result=25444  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=2000: median 85.54 ms  (IQR 2.241 ms, min 83.91, max 90.73)  n=7  result=28  consistent=true
+[11:05:12]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=10: median 33312 ms  (IQR 37.20 ms, min 33280, max 33378)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og join the: median 2.713 ms  (IQR 0.102 ms, min 2.639, max 2.892)  n=7  result=3851  consistent=true
+[11:10:46]   (exclusive) restarting dbbench-pg
+[11:10:46] --- file ---
+[11:10:46]   warming up file
+== file scan the: median 2738 ms  (IQR 7.707 ms, min 2735, max 2751)  n=7  result=2304884  consistent=true
+== file scan a: median 2308 ms  (IQR 6.332 ms, min 2302, max 2315)  n=7  result=25945428  consistent=true
+== file scan man: median 2508 ms  (IQR 5.147 ms, min 2499, max 2540)  n=7  result=502100  consistent=true
+== file scan love: median 2770 ms  (IQR 20.86 ms, min 2757, max 2798)  n=7  result=25444  consistent=true
+== file point n=2000: median 2255 ms  (IQR 2.859 ms, min 2251, max 2257)  n=7  result=28  consistent=true
+== file join the: median 6.226 ms  (IQR 0.124 ms, min 6.177, max 21.66)  n=7  result=3851  consistent=true
+== file point n=2000: median 15.12 ms  (IQR 0.533 ms, min 14.93, max 18.45)  n=7  result=28  consistent=true
+== file join the: median 2.887 ms  (IQR 0.110 ms, min 2.853, max 7.398)  n=7  result=3851  consistent=true
+[11:12:45] raw results: ./out/raw.csv (1279 data lines)
+[11:12:45] now:  python3 analysis/analyze.py --raw ./out/raw.csv
+[11:12:45] DONE  measure_4 -- 38m16s
+[11:12:45] BEGIN amplify_8 -- build the 8x table on both engines + export the file side
+[11:12:46] postgres: appending blocks 4..7 (from 51366340 to 102732680 rows)
+[11:13:32] postgres: inserted in 46s
+[11:13:35] postgres: 102732680 titles, 2000000 people, heap 6334 MB, indexes 2522 MB
+[11:13:40] opengauss: appending blocks 4..7 (from 51366340 to 102732680 rows)
+[11:15:07] opengauss: inserted in 87s
+[11:15:21] opengauss: 102732680 titles, 2000000 people, heap 6347 MB, indexes 3055 MB
+[11:15:21] regenerating the file-side export at SCALE=8
+[11:15:23] exporting titles_active.tsv ...
+to-tsv: 102732680 rows -> ./data/titles_active.tsv
+[11:17:04] building sorted variant + byte-offset index (this is the 'armed' file layout)
+index: 102732680 offsets (821861440 bytes) -> ./data/titles_active.sorted.idx
+[11:18:07] titles: 102732680 rows
+[11:18:07] exporting people_active.tsv ...
+to-tsv: 2000000 rows -> ./data/people_active.tsv
+[11:18:09] people: 2000000 rows (backup written to people_active.tsv.orig)
+[11:18:09] exporting film_movies.tsv ...
+to-tsv: 9204 rows -> ./data/film_movies.tsv
+[11:18:09] exporting film_credits.tsv ...
+to-tsv: 46850 rows -> ./data/film_credits.tsv
+[11:18:09] exporting film_people.tsv ...
+to-tsv: 16489 rows -> ./data/film_people.tsv
+[11:18:10] manifest:
+    # canonical file export
+    # generated 2026-10-09T11:15:21+00:00
+    # source: postgres container dbbench-pg, database bench
+    titles_active.tsv  rows=102732680  bytes=3575477909  sha256=6f34620b964fa605
+    titles_active.sorted.tsv  rows=102732680  bytes=3575477909  sha256=f3582de326cec09d
+    titles_active.sorted.idx  bytes=821861440
+    titles_active.range  1 7048307012
+    people_active.tsv  rows=2000000  bytes=45253607  sha256=bebcf4300b34dc46
+    film_movies.tsv  rows=9204  bytes=199765  sha256=b8b3688fa8a16b45
+    film_credits.tsv  rows=46850  bytes=571392  sha256=2c78c8160fb73c9c
+    film_people.tsv  rows=16489  bytes=320810  sha256=e700e2c8a4b50ce7
+
+SCALE=8 is loaded on both engines and exported to ./data.
+Next:  SCALE=8 scripts/40_run_all.sh
+[11:18:10] DONE  amplify_8 -- 5m25s
+[11:18:10] BEGIN guardrails_8 -- assert the file export and the SQL side encode the same data
+1. titles containing a tab (would shift fields in the TSV export):
+ count 
+-------
+     0
+(1 row)
+
+2. titles containing CR/LF (would break one-record-per-line reading):
+ count 
+-------
+     0
+(1 row)
+
+3. disagreements between LIKE and strpos on metacharacter-heavy titles:
+ disagreements 
+---------------
+             0
+(1 row)
+
+4. names containing CR/LF:
+ count 
+-------
+     0
+(1 row)
+
+5. rows the update predicate matches (this is the expected row count):
+ count  
+--------
+ 161542
+(1 row)
+
+[11:18:18] DONE  guardrails_8 -- 0m8s
+[11:18:18] BEGIN measure_8 -- scan/point/join at 8x, one engine at a time
+[11:18:18] run full-20261009-1001-s8  scale 8  modes[scan point join]  backends[pg og file]  phases[warm cold]  exclusive=1
+[11:18:18] ================= phase warm (scale8_warm) =================
+[11:18:18] --- pg ---
+[11:18:18]   (exclusive) stopping dbbench-og
+[11:18:21]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 6778 ms  (IQR 5.196 ms, min 6771, max 6789)  n=7  result=4609768  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 2072 ms  (IQR 14.05 ms, min 2063, max 2090)  n=7  result=4609768  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 5984 ms  (IQR 8.983 ms, min 5975, max 5997)  n=7  result=51890856  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 1866 ms  (IQR 9.242 ms, min 1857, max 1873)  n=7  result=51890856  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 6142 ms  (IQR 5.563 ms, min 6138, max 6152)  n=7  result=1004200  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 1915 ms  (IQR 10.26 ms, min 1895, max 1922)  n=7  result=1004200  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 6361 ms  (IQR 3.979 ms, min 6357, max 6365)  n=7  result=50888  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 1967 ms  (IQR 15.09 ms, min 1962, max 2005)  n=7  result=50888  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=2000: median 45.38 ms  (IQR 1.687 ms, min 42.71, max 47.24)  n=7  result=20  consistent=true
+[11:24:05]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=10: median 10436 ms  (IQR 37.26 ms, min 10317, max 10513)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg join the: median 2.617 ms  (IQR 0.130 ms, min 2.582, max 2.767)  n=7  result=3851  consistent=true
+[11:25:58]   (exclusive) restarting dbbench-og
+[11:25:58] --- og ---
+[11:25:58]   (exclusive) stopping dbbench-pg
+[11:25:59]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 11685 ms  (IQR 15.64 ms, min 11668, max 11707)  n=7  result=4609768  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 11687 ms  (IQR 22.83 ms, min 11658, max 11702)  n=7  result=4609768  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 11610 ms  (IQR 11.98 ms, min 11579, max 11637)  n=7  result=51890856  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 11611 ms  (IQR 3.511 ms, min 11606, max 11622)  n=7  result=51890856  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 10667 ms  (IQR 24.59 ms, min 10648, max 10716)  n=7  result=1004200  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 10679 ms  (IQR 41.40 ms, min 10622, max 10712)  n=7  result=1004200  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 11032 ms  (IQR 12.75 ms, min 11027, max 11049)  n=7  result=50888  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 11019 ms  (IQR 17.62 ms, min 11004, max 11030)  n=7  result=50888  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=2000: median 78.38 ms  (IQR 3.991 ms, min 74.23, max 81.90)  n=7  result=20  consistent=true
+[11:41:23]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=10: median 66926 ms  (IQR 24.24 ms, min 66915, max 66968)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og join the: median 2.708 ms  (IQR 0.192 ms, min 2.587, max 2.895)  n=7  result=3851  consistent=true
+[11:52:32]   (exclusive) restarting dbbench-pg
+[11:52:32] --- file ---
+[11:52:32]   warming up file
+== file scan the: median 5693 ms  (IQR 3.354 ms, min 5688, max 5694)  n=7  result=4609768  consistent=true
+== file scan a: median 4566 ms  (IQR 14.84 ms, min 4548, max 4611)  n=7  result=51890856  consistent=true
+== file scan man: median 5151 ms  (IQR 1.179 ms, min 5141, max 5153)  n=7  result=1004200  consistent=true
+== file scan love: median 5462 ms  (IQR 4.303 ms, min 5458, max 5469)  n=7  result=50888  consistent=true
+== file point n=2000: median 4471 ms  (IQR 5.646 ms, min 4468, max 4479)  n=7  result=20  consistent=true
+== file join the: median 6.350 ms  (IQR 7.022 ms, min 6.197, max 20.50)  n=7  result=3851  consistent=true
+== file point n=2000: median 15.67 ms  (IQR 0.332 ms, min 15.55, max 16.26)  n=7  result=20  consistent=true
+== file join the: median 6.218 ms  (IQR 0.596 ms, min 3.675, max 10.59)  n=7  result=3851  consistent=true
+[11:56:30] ================= phase cold (scale8_cold) =================
+[11:56:30] evicting the page cache by streaming 14G through it ...
+[11:56:36] page cache evicted by streaming a scratch file (method: scratch, no root)
+[WARN] this is weaker than drop_caches: dentry/inode caches survive. State that in the report.
+[11:56:36] note: shared_buffers is NOT cleared by either method; restart the containers for a true cold start:
+[11:56:36]       docker restart dbbench-pg dbbench-og
+[11:56:36] --- pg ---
+[11:56:36]   (exclusive) stopping dbbench-og
+[11:56:37]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 6778 ms  (IQR 11.27 ms, min 6753, max 6789)  n=7  result=4609768  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan the: median 2179 ms  (IQR 10.92 ms, min 2171, max 2191)  n=7  result=4609768  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 6009 ms  (IQR 7.064 ms, min 5999, max 6018)  n=7  result=51890856  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan a: median 1940 ms  (IQR 14.14 ms, min 1931, max 1952)  n=7  result=51890856  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 6164 ms  (IQR 2.744 ms, min 6158, max 6170)  n=7  result=1004200  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan man: median 1945 ms  (IQR 10.67 ms, min 1929, max 1955)  n=7  result=1004200  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 6367 ms  (IQR 7.431 ms, min 6362, max 6379)  n=7  result=50888  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg scan love: median 1943 ms  (IQR 14.44 ms, min 1939, max 1965)  n=7  result=50888  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=2000: median 46.63 ms  (IQR 1.017 ms, min 43.10, max 47.80)  n=7  result=20  consistent=true
+[12:02:23]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg point n=10: median 10220 ms  (IQR 63.20 ms, min 10116, max 10339)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg join the: median 2.695 ms  (IQR 0.057 ms, min 2.644, max 2.786)  n=7  result=3851  consistent=true
+[12:04:14]   (exclusive) restarting dbbench-og
+[12:04:14] --- og ---
+[12:04:14]   (exclusive) stopping dbbench-pg
+[12:04:15]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 11741 ms  (IQR 20.07 ms, min 11722, max 11787)  n=7  result=4609768  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan the: median 11733 ms  (IQR 18.34 ms, min 11721, max 11761)  n=7  result=4609768  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 11703 ms  (IQR 31.73 ms, min 11645, max 11711)  n=7  result=51890856  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan a: median 11691 ms  (IQR 15.83 ms, min 11664, max 11706)  n=7  result=51890856  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 10735 ms  (IQR 23.40 ms, min 10709, max 10767)  n=7  result=1004200  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan man: median 10749 ms  (IQR 16.61 ms, min 10732, max 10755)  n=7  result=1004200  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 11136 ms  (IQR 46.04 ms, min 11104, max 11186)  n=7  result=50888  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og scan love: median 11142 ms  (IQR 16.28 ms, min 11126, max 11162)  n=7  result=50888  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=2000: median 80.17 ms  (IQR 4.445 ms, min 75.58, max 83.97)  n=7  result=20  consistent=true
+[12:19:45]   dropping the primary key to measure the same query without an index (10 lookups)
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og point n=10: median 67164 ms  (IQR 50.07 ms, min 67055, max 67351)  n=7  result=0  consistent=true
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og join the: median 2.760 ms  (IQR 0.181 ms, min 2.690, max 2.958)  n=7  result=3851  consistent=true
+[12:30:56]   (exclusive) restarting dbbench-pg
+[12:30:56] --- file ---
+[12:30:56]   warming up file
+== file scan the: median 5671 ms  (IQR 7.490 ms, min 5667, max 5682)  n=7  result=4609768  consistent=true
+== file scan a: median 4647 ms  (IQR 4.067 ms, min 4637, max 4650)  n=7  result=51890856  consistent=true
+== file scan man: median 4988 ms  (IQR 5.664 ms, min 4978, max 4990)  n=7  result=1004200  consistent=true
+== file scan love: median 5325 ms  (IQR 39.63 ms, min 5319, max 5463)  n=7  result=50888  consistent=true
+== file point n=2000: median 4479 ms  (IQR 14.83 ms, min 4470, max 4504)  n=7  result=20  consistent=true
+== file join the: median 6.289 ms  (IQR 4.552 ms, min 6.219, max 15.16)  n=7  result=3851  consistent=true
+== file point n=2000: median 15.99 ms  (IQR 0.640 ms, min 15.80, max 18.98)  n=7  result=20  consistent=true
+== file join the: median 7.048 ms  (IQR 7.520 ms, min 2.398, max 10.75)  n=7  result=3851  consistent=true
+[12:34:51] raw results: ./out/raw.csv (1705 data lines)
+[12:34:51] now:  python3 analysis/analyze.py --raw ./out/raw.csv
+[12:34:51] DONE  measure_8 -- 76m33s
+[12:34:51] BEGIN constraints -- the declared-limit sweep: what the DBMS refuses
+[12:34:51] postgres: sweeping the declared length limit (restoring the table first)
+[12:34:56] postgres limit<=10: 1806556 rows, 11815 would break the rule -> **refused**,
+[12:34:59] postgres limit<=15: 1972406 rows, 2441 would break the rule -> **refused**,
+[12:35:02] postgres limit<=20: 1996027 rows, 344 would break the rule -> **refused**,
+[12:35:04] postgres limit<=25: 1999186 rows, 92 would break the rule -> **refused**,
+[12:35:07] postgres limit<=30: 1999752 rows, 21 would break the rule -> **refused**,
+[12:35:07] opengauss: sweeping the declared length limit (restoring the table first)
+[12:35:24] opengauss limit<=10: 1806556 rows, 11815 would break the rule -> **refused**,
+[12:35:34] opengauss limit<=15: 1972406 rows, 2441 would break the rule -> **refused**,
+[12:35:44] opengauss limit<=20: 1996027 rows, 344 would break the rule -> **refused**,
+[12:35:54] opengauss limit<=25: 1999186 rows, 92 would break the rule -> **refused**,
+[12:36:04] opengauss limit<=30: 1999752 rows, 21 would break the rule -> **refused**,
+[12:36:04] file: applying the identical rewrite and checking the same limits afterwards
+    == file update T->Ttt: median 210.0 ms  (IQR 0.000 ms, min 210.0, max 210.0)  n=1  result=161542  consistent=true
+    == heap in use after run: 92.3 MiB
+[12:36:13] wrote ./out/constraint_demo.txt
+## postgres
+
+| declared limit n | table rows | rows the rewrite would push past n | outcome |
+|---|---|---|---|
+| 10 | 1806556 | 11815 | **refused**, rolled back -- `ERROR:  value too long for type character varying(10)`, rows bearing the rewrite afterwards: 0 |
+| 15 | 1972406 | 2441 | **refused**, rolled back -- `ERROR:  value too long for type character varying(15)`, rows bearing the rewrite afterwards: 0 |
+| 20 | 1996027 | 344 | **refused**, rolled back -- `ERROR:  value too long for type character varying(20)`, rows bearing the rewrite afterwards: 0 |
+| 25 | 1999186 | 92 | **refused**, rolled back -- `ERROR:  value too long for type character varying(25)`, rows bearing the rewrite afterwards: 0 |
+| 30 | 1999752 | 21 | **refused**, rolled back -- `ERROR:  value too long for type character varying(30)`, rows bearing the rewrite afterwards: 0 |
+
+## opengauss
+
+| declared limit n | table rows | rows the rewrite would push past n | outcome |
+|---|---|---|---|
+| 10 | 1806556 | 11815 | **refused**, rolled back -- `ERROR:  value too long for type character varying(10)`, rows bearing the rewrite afterwards: 0 |
+| 15 | 1972406 | 2441 | **refused**, rolled back -- `ERROR:  value too long for type character varying(15)`, rows bearing the rewrite afterwards: 0 |
+| 20 | 1996027 | 344 | **refused**, rolled back -- `ERROR:  value too long for type character varying(20)`, rows bearing the rewrite afterwards: 0 |
+| 25 | 1999186 | 92 | **refused**, rolled back -- `ERROR:  value too long for type character varying(25)`, rows bearing the rewrite afterwards: 0 |
+| 30 | 1999752 | 21 | **refused**, rolled back -- `ERROR:  value too long for type character varying(30)`, rows bearing the rewrite afterwards: 0 |
+
+## file backend
+
+The identical rewrite, streamed to a new file. The columns are separated so
+the comparison with the table above is honest: \created by the rewrite\
+counts only rows that satisfied the rule *before* the update and stopped
+satisfying it afterwards -- the same quantity as the DBMS column above.
+\\"already invalid\\" counts rows the flat file never had a way to reject.
+
+| declared limit n | created by the rewrite | already invalid before it | reported to anyone |
+|---|---|---|---|
+| 10 | 11815 | 193444 | 0 -- there is no mechanism |
+| 15 | 2441 | 27594 | 0 -- there is no mechanism |
+| 20 | 344 | 3973 | 0 -- there is no mechanism |
+| 25 | 92 | 814 | 0 -- there is no mechanism |
+| 30 | 21 | 248 | 0 -- there is no mechanism |
+
+The file program did not fail, and nothing downstream will ever know. This is
+the difference between *faster* and *possible*: a schema can state a rule and
+the engine will enforce it on every write, including writes nobody
+contemplated when the rule was written. The DBMS paid for that refusal with
+**0 rows changed** -- all or nothing, not \most of it\.
+[12:36:13] DONE  constraints -- 1m22s
+[12:36:13] BEGIN updates -- T -> Ttt cost, bloat, VACUUM, and ASTORE vs USTORE
+[12:36:13] PostgreSQL: ALTER SYSTEM SET (sql/guc/pg_guc.sql)
+     pg_reload_conf 
+    ----------------
+     t
+    (1 row)
+    
+[12:36:13] openGauss: ALTER SYSTEM SET first, to record that it is refused
+[12:36:13]     7 statement(s) rejected -- see ./out/og_alter_system.log
+[12:36:13] openGauss: appending sql/guc/og_conf.conf to postgresql.conf (idempotent)
+[12:36:13]     enable_ustore=on (override with ENABLE_USTORE=on|off)
+[12:36:13]     wrote 22 settings into /var/lib/opengauss/data/postgresql.conf
+[12:36:13] restarting both engines (postmaster parameters need it)
+[12:36:14] waiting for postgres ...
+[12:36:14] postgres ready
+[12:36:14] waiting for opengauss ...
+[12:36:15] opengauss ready (database 'bench')
+[12:36:15] settings that actually took effect:
+[12:36:19] wrote ./out/guc_compare.md
+[12:36:19] no divergent parameters
+[12:36:19] ----- pg / bench_people_active -----
+[12:36:19] pg/bench_people_active: restoring and compacting before measuring
+[12:36:24] pg/bench_people_active: 153305088 -> 163708928 bytes (+10403840, dead=161009), vacuum 160ms, vacuum full 768ms
+[12:36:24] ----- og / bench_people_active -----
+[12:36:24] (ASTORE comparison table is bench_people_astore)
+[12:36:24] og/bench_people_active: restoring and compacting before measuring
+[12:36:36] og/bench_people_active: 153640960 -> 166035456 bytes (+12394496, dead=161542), vacuum 133ms, vacuum full 1364ms
+[12:36:36] ----- og / bench_people_ustore -----
+[12:36:36] og/bench_people_ustore: restoring and compacting before measuring
+[12:36:44] og/bench_people_ustore: 1220608 -> 1294336 bytes (+73728, dead=0), vacuum 77ms, vacuum full 92ms
+[12:36:44] wrote ./out/storage_ab.md
+# Write amplification of the `T -> Ttt` update
+
+Measured 2026-10-09T12:36:19+00:00 on `benchmark-host`. All values are total relation bytes
+(`pg_relation_size` + `pg_indexes_size`). Autovacuum is **off** during the
+measurement and reclamation is timed explicitly, so that no background
+process can be credited (or blamed) for anything.
+
+| target | rows changed | before (B) | after update (B) | growth | growth % | dead tuples | VACUUM (ms) | after VACUUM (B) | VACUUM FULL (ms) | after FULL (B) | update (ms) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| pg/bench_people_active | 161542 | 153305088 | 163708928 | 10403840 | 6.79% | 161009 | 160 | 163708928 | 768 | 153632768 | 581 |
+| og/bench_people_active | 161542 | 153640960 | 166035456 | 12394496 | 8.07% | 161542 | 133 | 166035456 | 1364 | 166395904 | 813 |
+| og/bench_people_ustore | 1287 | 1220608 | 1294336 | 73728 | 6.04% | 0 | 77 | 1294336 | 92 | 1228800 | 85 |
+
+Reading the table:
+
+* An append-only engine shows `after > before` even though no row was added:
+  that difference is the update's write amplification, and it is why the
+  same statement costs more the second time.
+* `VACUUM FULL` needs a second copy of the table on disk. On a 12 GB table
+  that is a real operational constraint, not a footnote.
+* openGauss `USTORE` trades `after` for undo space, which lives outside the
+  relation and therefore does not show up in `pg_relation_size` -- state that
+  caveat explicitly when you quote these numbers.
+[12:36:44] DONE  updates -- 0m31s
+[12:36:44] BEGIN concurrency -- lost updates and durability vs client count
+[12:36:44] run full-20261009-1001-conc  scale 8  modes[counter]  backends[pg og file]  phases[warm]  exclusive=1
+[12:36:44] ================= phase warm (scale8_warm) =================
+[12:36:44] --- pg ---
+[12:36:44]   (exclusive) stopping dbbench-og
+[12:36:45]   warming up pg
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg counter threads=1x500: median 0.521 s  survived 500/500 (100.0%)  n=7
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg counter threads=4x500: median 2.074 s  survived 2000/2000 (100.0%)  n=7
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg counter threads=16x500: median 8.262 s  survived 8000/8000 (100.0%)  n=7
+# driver: org.postgresql.Driver (JDBC 42.7) from postgresql-42.7.4.jar
+== pg counter threads=64x500: median 33.071 s  survived 32000/32000 (100.0%)  n=7
+[12:41:58]   (exclusive) restarting dbbench-og
+[12:41:59] --- og ---
+[12:41:59]   (exclusive) stopping dbbench-pg
+[12:41:59]   warming up og
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og counter threads=1x500: median 1.035 s  survived 500/500 (100.0%)  n=7
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og counter threads=4x500: median 4.098 s  survived 2000/2000 (100.0%)  n=7
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og counter threads=16x500: median 16.246 s  survived 8000/8000 (100.0%)  n=7
+# driver: org.postgresql.Driver (JDBC 42.0) from opengauss-jdbc-5.0.0.jar
+== og counter threads=64x500: median 64.764 s  survived 32000/32000 (100.0%)  n=7
+[12:52:18]   (exclusive) restarting dbbench-pg
+[12:52:18] --- file ---
+[12:52:18]   warming up file
+== file counter threads=1x500: median 0.015 s  survived 500/500 (100.0%)  n=7
+== file counter threads=1x500: median 0.594 s  survived 500/500 (100.0%)  n=7
+== file counter threads=4x500: median 0.072 s  survived 105/2000 (5.3%)  n=7
+== file counter threads=4x500: median 1.055 s  survived 29/2000 (1.5%)  n=7
+== file counter threads=16x500: median 0.153 s  survived 63/8000 (0.8%)  n=7
+== file counter threads=16x500: median 0.914 s  survived 12/8000 (0.2%)  n=7
+== file counter threads=64x500: median 0.552 s  survived 4/32000 (0.0%)  n=7
+== file counter threads=64x500: median 1.797 s  survived 15/32000 (0.0%)  n=7
+[12:53:07] raw results: ./out/raw.csv (1820 data lines)
+[12:53:07] now:  python3 analysis/analyze.py --raw ./out/raw.csv
+[12:53:07] DONE  concurrency -- 16m23s
+[12:53:07] BEGIN analyse -- median/IQR tables + the cross-backend consistency check
+rows read          : 1792  (+27 warm-up rows excluded)
+cases              : 32
+summary            : out/summary.csv
+report tables      : out/report_tables.md
+
+ok: all backends agree on every answer
+
+noisiest cases (highest coefficient of variation):
+   counter threads=1x500  file /seqscan          n=14 median=  306.918 ms  CV=0.94
+   counter threads=4x500  file /seqscan          n=14 median=  563.614 ms  CV=0.89
+   join    the            file /seqscan          n= 7 median=    6.226 ms  CV=0.64
+   join    the            file /seqscan          n= 7 median=    6.585 ms  CV=0.62
+   join    the            file /seqscan          n= 7 median=    6.350 ms  CV=0.61
+[12:53:07] DONE  analyse -- 0m0s
+[12:53:07] BEGIN figures -- the five figures (skipped cleanly if matplotlib is missing)
+matplotlib is not installed -- run:  pip install matplotlib numpy
+the numbers are already in out/summary.csv, nothing else is needed
+[12:53:07] DONE  figures -- 0m0s
+
+[12:53:07] full run complete.
+
+  raw      out/raw.csv
+  summary  out/summary.csv
+  tables   out/report_tables.md      <- paste into the report
+  figures  out/figures/
+  explain  out/explain/              <- the mechanism evidence
+
+Phase markers live in ./out/phases. Delete one to redo that phase.
+
+launcher: full run COMPLETED at 2026-10-09T12:53:07+00:00
+next:  python3 analysis/analyze.py   and read out/report_tables.md
